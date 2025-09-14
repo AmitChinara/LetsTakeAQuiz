@@ -3,7 +3,6 @@ require("dotenv").config();
 
 // Start a new game session
 const startNewGame = async (userId, playerName) => {
-    const totalLevels = parseInt(process.env.TOTAL_LEVELS) || 15;
 
     const game = new Game({
         user: userId,
@@ -12,7 +11,6 @@ const startNewGame = async (userId, playerName) => {
         totalPoints: 0,
         winner: false,
         answers: [],
-        totalLevels,
     });
 
     await game.save();
@@ -35,6 +33,8 @@ const getNextQuestion = async (gameId) => {
 
 // Submit answer for the current question
 const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
+    const totalLevels = parseInt(process.env.TOTAL_LEVELS) || 15;
+
     const game = await Game.findById(gameId);
     if (!game) throw new Error("Game not found");
 
@@ -65,11 +65,14 @@ const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
     game.updatedAt = new Date();
     await game.save();
 
+
     // Return next question or null if game over
     const nextQuestion =
-        game.currentQuestionIndex < game.totalLevels
+        game.currentQuestionIndex < totalLevels
             ? await getNextQuestion(game._id)
             : null;
+
+    console.log(`${nextQuestion}`);
 
     return {
         isCorrect,
