@@ -107,6 +107,7 @@ const getUserScoreboard = async (userId) => {
         playerName: game.playerName,
         totalPoints: game.totalPoints,
         winner: game.winner,
+        quit: game.quit,
         createdAt: game.createdAt,
     }));
 };
