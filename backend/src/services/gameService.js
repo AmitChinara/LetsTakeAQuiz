@@ -34,6 +34,8 @@ const getNextQuestion = async (gameId) => {
 // Submit answer for the current question
 const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
     const totalLevels = parseInt(process.env.TOTAL_LEVELS) || 15;
+    const totalPoints = parseInt(process.env.TOTAL_POINTS) || 100;
+    const pointDistribution = (process.env.POINTS_DISTRIBUTION).split(',').map(Number);
 
     const game = await Game.findById(gameId);
     if (!game) throw new Error("Game not found");
@@ -43,9 +45,7 @@ const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
 
     const isCorrect = question.correctOption === selectedOption;
 
-    // Calculate points based on level (you can use a mapping or multiplier)
-    const levelPoints = parseInt(process.env.POINTS_PER_LEVEL) || 1000;
-    const pointsEarned = isCorrect ? levelPoints * (game.currentQuestionIndex + 1) : Math.floor(game.totalPoints / 2);
+    const pointsEarned = isCorrect ? totalPoints * pointDistribution[game.currentQuestionIndex] : 0;
 
     game.answers.push({
         question: questionId,
@@ -54,11 +54,11 @@ const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
         pointsEarned,
     });
 
-    game.totalPoints += pointsEarned;
+    game.totalPoints += isCorrect ? pointsEarned : -Math.floor(game.totalPoints / 2);
     game.currentQuestionIndex += 1;
 
     // Mark winner if last level answered correctly
-    if (game.currentQuestionIndex === game.totalLevels && isCorrect) {
+    if (game.currentQuestionIndex === totalLevels && isCorrect) {
         game.winner = true;
     }
 
@@ -68,11 +68,9 @@ const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
 
     // Return next question or null if game over
     const nextQuestion =
-        game.currentQuestionIndex < totalLevels
+        game.currentQuestionIndex < totalLevels && isCorrect
             ? await getNextQuestion(game._id)
             : null;
-
-    console.log(`${nextQuestion}`);
 
     return {
         isCorrect,
