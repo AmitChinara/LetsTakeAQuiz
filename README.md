@@ -31,6 +31,7 @@ Let's Take A Quiz is a KBC-style quiz game built with **React.js**, **Node.js**,
 ---
 
 ## Project Structure
+```
 LetsTakeAQuiz/
 ├── backend/ # Node.js backend
 │ ├── controllers/ # API controllers
@@ -53,4 +54,4 @@ LetsTakeAQuiz/
 │ │ │ └── resources/ # application.properties, configs
 │ │ └── test/ # Unit tests
 └── README.md # Project README
-
+```
