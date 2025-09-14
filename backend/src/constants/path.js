@@ -10,6 +10,12 @@ const ROUTE = {
         SIGNIN: '/signin',
         LOGIN: '/login',
     },
+    GAME: {
+        BASE: '/game',
+        START: '/start',
+        SCOREBOARD: '/scoreboard/:userId',
+        SUBMIT: '/submit',
+    },
 }
 
 module.exports = ROUTE;
