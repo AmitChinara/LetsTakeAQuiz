@@ -58,5 +58,106 @@ LetsTakeAQuiz/
 
 ## Setup Instructions
 - Backend (Node.js + MongoDB)
+  1. Install dependencies:
+    ```
+    cd backend
+    npm install
+    ```
+  2. Configure MongoDB connection in db/config.js:
+    ```
+    module.exports = {
+      mongoURI: "mongodb://localhost:27017/lets_take_a_quiz"
+    };
+    ```
+  2. Run the server:
+    ```
+    npm start
+    ```
+- Analytics Service (Java Spring Boot)
+  - Open analytics folder in your Editor.
+  - Configure MongoDB connection in application.properties.
+  - Run the Spring Boot application.
+  ## Database Schema (MongoDB Collections)
 
-### Install dependencies:
+### Users Collection
+```
+{
+  "_id": "ObjectId",
+  "username": "string",
+  "passwordHash": "string",
+  "createdAt": "Date",
+  "updatedAt": "Date"
+}
+```
+### Games Collection
+```
+{
+  "_id": "ObjectId",
+  "userId": "ObjectId",
+  "playerName": "string",        // Name entered before starting the game
+  "currentQuestion": 7,          // Tracks current question index
+  "score": 120000,               // Current score
+  "isWinner": false,             // True if all 15 questions answered correctly
+  "status": "in-progress",       // in-progress | completed | quit
+  "createdAt": "Date",
+  "updatedAt": "Date"
+}
+```
+### Questions Collection
+```
+{
+  "_id": "ObjectId",
+  "questionText": "string",
+  "options": ["string", "string", "string", "string"],
+  "correctAnswer": "string",
+  "points": 20000                // Points for this question
+}
+```
+
+## Game Flow
+```
+[Login / Signup]
+        |
+        v
+ [Enter Player Name]
+        |
+        v
+ [Start New Game] --------------------------+
+        |                                   |
+        v                                   |
+ [Fetch Question 1]                         |
+        |                                   |
+        v                                   |
+[Answer Submitted]                          |
+   |        |        |                      |
+   |        |        |                      |
+Correct   Wrong     Quit                    |
+   |        |        |                      |
+   v        v        v                      |
++------+  +------+  +-------------------+   |
+| Add  |  | 50%  |  | Keep total points |   |
+| full |  |score |  |   earned so far   |   |
+|points|  +------+  +-------------------+   |
++------+                               |    |
+   |                                   |    |
+   v                                   v    v
+[Next Question] <----------------- [Game Over]
+        |
+   (repeat until Q15)
+        |
+        v
+ [All 15 Correct?]
+        |
+   +----+----+
+   |         |
+  Yes        No
+   |         |
+   v         v
+["Crorepati" | End with final score
+  Popup +    |
+  Winner     |
+   Crown]    |
+             |
+             v
+        [Scoreboard]
+```
