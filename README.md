@@ -55,3 +55,8 @@ LetsTakeAQuiz/
 │ │ └── test/ # Unit tests
 └── README.md # Project README
 ```
+
+## Setup Instructions
+- Backend (Node.js + MongoDB)
+
+### Install dependencies:
