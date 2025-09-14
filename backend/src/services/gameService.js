@@ -81,6 +81,25 @@ const submitAnswerToGame = async (gameId, questionId, selectedOption) => {
     };
 };
 
+const quitGame = async (gameId) => {
+    const game = await Game.findById(gameId);
+    if (!game) throw new Error("Game not found");
+
+    const { isCorrect, pointsEarned, nextQuestion } = { isCorrect:false, pointsEarned: 0, getNextQuestion: null };
+
+    game.quit = true;
+    game.updatedAt = new Date();
+    await game.save();
+
+    return {
+        isCorrect,
+        pointsEarned,
+        totalPoints: game.totalPoints,
+        winner: game.winner,
+        nextQuestion,
+    };
+}
+
 // Get user's personal scoreboard
 const getUserScoreboard = async (userId) => {
     const games = await Game.find({ user: userId }).sort({ createdAt: -1 });
@@ -96,5 +115,6 @@ module.exports = {
     startNewGame,
     getNextQuestion,
     submitAnswerToGame,
+    quitGame,
     getUserScoreboard,
 };

@@ -15,6 +15,7 @@ const ROUTE = {
         START: '/start',
         SCOREBOARD: '/scoreboard/:userId',
         SUBMIT: '/submit',
+        QUIT: '/quit',
     },
 }
 

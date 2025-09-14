@@ -9,5 +9,6 @@ const router = express.Router();
 router.post(path.GAME.START, authMiddleware, gameController.startGame);
 router.post(path.GAME.SUBMIT, authMiddleware, gameController.submitAnswer);
 router.get(path.GAME.SCOREBOARD, authMiddleware, gameController.getScoreboard);
+router.post(path.GAME.QUIT, authMiddleware, gameController.quitGame);
 
 module.exports = router;

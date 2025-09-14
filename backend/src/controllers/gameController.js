@@ -40,6 +40,22 @@ const submitAnswer = async (req, res) => {
     }
 };
 
+const quitGame = async (req, res) => {
+    try {
+        const { gameId } = req.body;
+        const userId = req.user._id;
+
+        const result = await gameService.quitGame(gameId, userId);
+
+        res.json({
+            message: "Game quit ✅",
+            ...result
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 // Get the user's personal scoreboard
 const getScoreboard = async (req, res) => {
     try {
@@ -56,5 +72,6 @@ const getScoreboard = async (req, res) => {
 module.exports = {
     startGame,
     submitAnswer,
-    getScoreboard
+    quitGame,
+    getScoreboard,
 };

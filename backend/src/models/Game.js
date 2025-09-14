@@ -13,7 +13,8 @@ const gameSchema = new mongoose.Schema({
             pointsEarned: Number
         }
     ],
-    winner: { type: Boolean, default: false }, // true if all 15 questions correct
+    winner: { type: Boolean, default: false }, // true if all 15 questions correctgame.updatedAt = new Date();
+    quit: { type: Boolean, default: false }, // true if user quit the game
 }, { timestamps: true });
 
 module.exports = mongoose.model("Game", gameSchema);
