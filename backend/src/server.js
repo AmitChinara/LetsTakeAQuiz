@@ -1,4 +1,6 @@
 const express = require('express');
+const cookieParser = require("cookie-parser");
+
 require('dotenv').config();
 
 const { connectDB } = require('./db');
@@ -7,6 +9,7 @@ const path = require('./constants/path');
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect DB
 connectDB().then().catch(err => console.error(err));

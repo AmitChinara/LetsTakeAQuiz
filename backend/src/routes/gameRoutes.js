@@ -1,17 +1,13 @@
 const express = require("express");
-const path = require('../constants/path');
-
+const path = require("../constants/path");
 const { gameController } = require("../controllers");
+const authMiddleware = require("../middleware/auth"); // <-- add your auth middleware
 
 const router = express.Router();
 
-// Start a new game session
-router.post(path.GAME.START, gameController.startGame);
-
-// Submit an answer for a question
-router.post(path.GAME.SUBMIT, gameController.submitAnswer);
-
-// Get user's personal scoreboard
-router.get(path.GAME.SCOREBOARD, gameController.getScoreboard);
+// All game routes require authentication
+router.post(path.GAME.START, authMiddleware, gameController.startGame);
+router.post(path.GAME.SUBMIT, authMiddleware, gameController.submitAnswer);
+router.get(path.GAME.SCOREBOARD, authMiddleware, gameController.getScoreboard);
 
 module.exports = router;

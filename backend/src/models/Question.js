@@ -8,7 +8,7 @@ const questionSchema = new mongoose.Schema({
         validate: [arrayLimit, "{PATH} must have 4 options"]
     },
     correctOption: { type: String, required: true },
-    points: { type: Number, required: true } // points for this question
+    level: { type: Number, required: true } // points for this question
 }, { timestamps: true });
 
 // Custom validator to ensure exactly 4 options

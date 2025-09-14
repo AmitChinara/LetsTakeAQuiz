@@ -1,26 +1,48 @@
-const { userService } = require("../services");
+const models = require("../models");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
+// Signup
 const signup = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await userService.signupUser(username, password);
-        res.json({ message: "User created ✅", user });
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = new models.User({ username, password: hashedPassword });
+        await user.save();
+
+        res.status(201).json({ message: "User created ✅", userId: user._id });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
+// Login
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await userService.loginUser(username, password);
-        res.json({ message: "Login successful ✅", user });
+        const user = await models.User.findOne({ username });
+        if (!user) return res.status(400).json({ error: "Invalid credentials" });
+
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
+
+        // Create JWT token
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        res
+            .cookie("token", token, {
+                httpOnly: true,      // prevents JS access to the cookie
+                secure: process.env.NODE_ENV === "production", // only HTTPS in prod
+                maxAge: 3600000       // 1 hour
+            })
+            .json({ message: "Login successful ✅" });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
 };
 
-module.exports = {
-    signup,
-    login
-};
+module.exports = { signup, login };
