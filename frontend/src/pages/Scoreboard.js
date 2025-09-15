@@ -14,28 +14,67 @@ const Scoreboard = () => {
         const fetchScoreboard = async () => {
             try {
                 const res = await gameAPI.getScoreboard();
-                setScores(res.scoreboard); // keep server order
+                setScores(res.scoreboard);
             } catch (err) {
                 console.error("Failed to fetch scoreboard", err);
             } finally {
                 setLoading(false);
             }
         };
-
         fetchScoreboard();
     }, []);
 
     if (loading) return <p>Loading scoreboard...</p>;
 
-    // Pagination logic
+    const totalPages = Math.ceil(scores.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentScores = scores.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(scores.length / itemsPerPage);
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber < 1 || pageNumber > totalPages) return;
         setCurrentPage(pageNumber);
+    };
+
+    // Smart pagination buttons
+    const renderPageButtons = () => {
+        const buttons = [];
+
+        // Always show first page
+        if (currentPage > 3) {
+            buttons.push(
+                <button key={1} onClick={() => handlePageChange(1)}>
+                    1
+                </button>
+            );
+            buttons.push(<span key="start-ellipsis"> ... </span>);
+        }
+
+        // Show current page ±1
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            if (i < 1 || i > totalPages) continue;
+            buttons.push(
+                <button
+                    key={i}
+                    className={currentPage === i ? "active" : ""}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        // Always show last page
+        if (currentPage < totalPages - 2) {
+            buttons.push(<span key="end-ellipsis"> ... </span>);
+            buttons.push(
+                <button key={totalPages} onClick={() => handlePageChange(totalPages)}>
+                    {totalPages}
+                </button>
+            );
+        }
+
+        return buttons;
     };
 
     return (
@@ -68,24 +107,8 @@ const Scoreboard = () => {
                 </tbody>
             </table>
 
-            {/* Pagination Controls */}
-            <div className="pagination">
-                <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                    <button
-                        key={i}
-                        className={currentPage === i + 1 ? "active" : ""}
-                        onClick={() => handlePageChange(i + 1)}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-                <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                    Next
-                </button>
-            </div>
+            {/* Pagination without Next/Prev */}
+            <div className="pagination">{renderPageButtons()}</div>
         </div>
     );
 };
