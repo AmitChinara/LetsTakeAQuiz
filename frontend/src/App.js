@@ -1,49 +1,55 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { PATH } from "./config/config";
 
-import Login from "./components/Auth/Login";
-import Signup from "./components/Auth/Signup";
-import GameBoard from "./components/Game/GameBoard";
+// Pages / Components
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import Game from "./pages/Game";
+import Scoreboard from "./pages/Scoreboard";
 
-function PrivateRoute({ children }) {
-    const { user } = useAuth();
-    return user ? children : <Navigate to="/login" replace />;
-}
+// ✅ Private Route Wrapper (checks token before allowing access)
+const PrivateRoute = ({ children }) => {
+    const token = localStorage.getItem("quiz_token"); // you can use VALUES.TOKEN_KEY
+    return token ? children : <Navigate to={PATH.FRONTEND.LOGIN} replace />;
+};
 
-function App() {
+const App = () => {
     return (
-        <AuthProvider>
-            <Router>
-                <Routes>
-                    {/* Public routes */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
+        <Router>
+            <Routes>
+                {/* Auth Routes */}
+                <Route path={PATH.FRONTEND.LOGIN} element={<Login />} />
+                <Route path={PATH.FRONTEND.SIGNUP} element={<Signup />} />
 
-                    {/* Protected routes */}
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <PrivateRoute>
-                                <Dashboard />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/game"
-                        element={
-                            <PrivateRoute>
-                                <GameBoard />
-                            </PrivateRoute>
-                        }
-                    />
-
-                    {/* Default redirect */}
-                    <Route path="*" element={<Navigate to="/login" replace />} />
-                </Routes>
-            </Router>
-        </AuthProvider>
+                {/* Protected Routes */}
+                <Route
+                    path={PATH.FRONTEND.DASHBOARD}
+                    element={
+                        <PrivateRoute>
+                            <Dashboard />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={PATH.FRONTEND.GAME}
+                    element={
+                        <PrivateRoute>
+                            <Game />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={PATH.FRONTEND.SCOREBOARD}
+                    element={
+                        <PrivateRoute>
+                            <Scoreboard />
+                        </PrivateRoute>
+                    }
+                />
+            </Routes>
+        </Router>
     );
 }
 

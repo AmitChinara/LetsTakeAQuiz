@@ -9,6 +9,7 @@ const ROUTE = {
         BASE: '/user',
         SIGNUP: '/signup',
         LOGIN: '/login',
+        PROFILE: '/profile',
     },
     GAME: {
         BASE: '/game',

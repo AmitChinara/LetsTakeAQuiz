@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 // Signup
 const signup = async (req, res) => {
+    console.log("Signup Controller Called");
     try {
         const { username, password } = req.body;
 
@@ -21,6 +22,7 @@ const signup = async (req, res) => {
 
 // Login
 const login = async (req, res) => {
+    console.log("Login Controller Called");
     try {
         const { username, password } = req.body;
         const user = await models.User.findOne({ username });
@@ -39,10 +41,20 @@ const login = async (req, res) => {
                 secure: process.env.NODE_ENV === "production", // only HTTPS in prod
                 maxAge: 3600000       // 1 hour
             })
-            .json({ message: "Login successful ✅" });
+            .json({ message: "Login successful ✅", user: { id: user._id, username: user.username, token } });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
-module.exports = { signup, login };
+const profile = async (req, res) => {
+    console.log("Profile Controller Called");
+    try {
+        if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+        res.json({ user: { username: req.user.username, _id: req.user._id } });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+module.exports = { signup, login, profile };
