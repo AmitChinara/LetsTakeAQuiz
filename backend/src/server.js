@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 // ✅ Allow CORS from your frontend
 app.use(cors({
-    origin: 'http://localhost:3000', // frontend origin
+    origin: 'https://lets-take-a-quiz.onrender.com', // frontend origin
     credentials: true // allows cookies to be sent
 }));
 
