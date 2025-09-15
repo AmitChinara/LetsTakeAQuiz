@@ -88,7 +88,6 @@ const quitGame = async (gameId) => {
     const { isCorrect, pointsEarned, nextQuestion } = { isCorrect:false, pointsEarned: 0, getNextQuestion: null };
 
     game.quit = true;
-    game.totalPoints -= Math.floor(game.totalPoints / 2);
     game.updatedAt = new Date();
     await game.save();
 

@@ -151,22 +151,20 @@ const Game = () => {
                 <div className="game-over">
                     {winner ? (
                         <>
-                            <h3>🎉 Congo!! You are a Crorepati!</h3>
+                            <h3>🎉 Congo!! You are a Crorepati(In Knowledge Only)!</h3>
                             <p>Total Points: {totalPoints}</p>
                         </>
                     ) : quit ? (
                         <>
                             <h3>😜 You quit... couldn’t handle the pressure?</h3>
-                            {totalPoints !== 0 && (
-                                <h3>Quitter!!! Get their money half...🤣🤣</h3>
-                            )}
-                            <p>Total Points: {Math.floor(totalPoints / 2)}</p>
+                            <p>Total Points: {totalPoints}</p>
                         </>
                     ) : (
                         <>
                             <h3>❌ Sorry!! The Answer was wrong</h3>
                             {correctAnswer && <p>✅ Correct Answer: {correctAnswer}</p>}
-                            <p>Total Points: {totalPoints}</p>
+                            {totalPoints !== 0 && <p>As you gave wrong answer point reduced to half.</p>}
+                            <p>Total Points: {Math.floor(totalPoints / 2)}</p>
                         </>
                     )}
                     <button onClick={() => navigate(PATH.FRONTEND.DASHBOARD)}>
