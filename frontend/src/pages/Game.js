@@ -164,7 +164,7 @@ const Game = () => {
                             <h3>❌ Sorry!! The Answer was wrong</h3>
                             {correctAnswer && <p>✅ Correct Answer: {correctAnswer}</p>}
                             {totalPoints !== 0 && <p>As you gave wrong answer point reduced to half.</p>}
-                            <p>Total Points: {Math.floor(totalPoints / 2)}</p>
+                            <p>Total Points: {totalPoints}</p>
                         </>
                     )}
                     <button onClick={() => navigate(PATH.FRONTEND.DASHBOARD)}>
