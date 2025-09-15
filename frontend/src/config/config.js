@@ -1,5 +1,5 @@
 const PATH = {
-    API_BASE: "http://localhost:5000/api", // backend base URL
+    API_BASE: "https://letstakeaquizbackend.onrender.com/api", // backend base URL
 
     AUTH: {
         LOGIN: "/user/login",
