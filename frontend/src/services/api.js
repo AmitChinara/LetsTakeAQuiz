@@ -72,8 +72,8 @@ export const gameAPI = {
         apiRequest(PATH.GAME.START, { method: "POST", body: JSON.stringify({ playerName }) }),
     submitAnswer: (gameId, questionId, answer) =>
         apiRequest(PATH.GAME.SUBMIT, { method: "POST", body: JSON.stringify({ gameId, questionId, answer }) }),
-    getScoreboard: (userId) =>
-        apiRequest(`${PATH.GAME.SCOREBOARD}/${userId}`, { method: "GET" }),
+    getScoreboard: () =>
+        apiRequest(`${PATH.GAME.SCOREBOARD}`, { method: "GET" }),
     getNextQuestion: (gameId) =>
         apiRequest(`${PATH.GAME.QUESTION}/${gameId}`, { method: "GET" }),
 };

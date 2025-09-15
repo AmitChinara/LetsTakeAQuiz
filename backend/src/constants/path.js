@@ -14,7 +14,7 @@ const ROUTE = {
     GAME: {
         BASE: '/game',
         START: '/start',
-        SCOREBOARD: '/scoreboard/:userId',
+        SCOREBOARD: '/scoreboard',
         SUBMIT: '/submit',
         QUIT: '/quit',
     },

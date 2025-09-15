@@ -58,6 +58,7 @@ const quitGame = async (req, res) => {
 
 // Get the user's personal scoreboard
 const getScoreboard = async (req, res) => {
+    console.log("Scoreboard Controller Called");
     try {
         const userId = req.user._id;
 
