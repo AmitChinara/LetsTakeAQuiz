@@ -70,10 +70,12 @@ export const authAPI = {
 export const gameAPI = {
     startGame: (playerName) =>
         apiRequest(PATH.GAME.START, { method: "POST", body: JSON.stringify({ playerName }) }),
-    submitAnswer: (gameId, questionId, answer) =>
-        apiRequest(PATH.GAME.SUBMIT, { method: "POST", body: JSON.stringify({ gameId, questionId, answer }) }),
+    submitAnswer: (gameId, questionId, selectedOption) =>
+        apiRequest(PATH.GAME.SUBMIT, { method: "POST", body: JSON.stringify({ gameId, questionId, selectedOption }) }),
     getScoreboard: () =>
         apiRequest(`${PATH.GAME.SCOREBOARD}`, { method: "GET" }),
     getNextQuestion: (gameId) =>
         apiRequest(`${PATH.GAME.QUESTION}/${gameId}`, { method: "GET" }),
+    quitGame: (gameId) =>
+        apiRequest(PATH.GAME.QUIT, { body: JSON.stringify({ gameId } ), method: "POST" }),
 };

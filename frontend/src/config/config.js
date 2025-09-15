@@ -13,6 +13,7 @@ const PATH = {
         SUBMIT: "/game/submit",
         SCOREBOARD: "/game/scoreboard",
         QUESTION: "/game/question", // fetch next question
+        QUIT: "/game/quit",
     },
 
     FRONTEND: {

@@ -3,6 +3,7 @@ const gameService = require("../services/gameService");
 
 // Start a new game session
 const startGame = async (req, res) => {
+    console.log("Start Game Controller Called");
     try {
         const { playerName } = req.body;
         const userId = req.user._id; // auth middleware should set this
@@ -22,6 +23,7 @@ const startGame = async (req, res) => {
 
 // Submit an answer for the current question
 const submitAnswer = async (req, res) => {
+    console.log("Submit Answer Controller Called");
     try {
         const { gameId, questionId, selectedOption } = req.body;
 
@@ -41,6 +43,7 @@ const submitAnswer = async (req, res) => {
 };
 
 const quitGame = async (req, res) => {
+    console.log("Quit Game Controller Called");
     try {
         const { gameId } = req.body;
         const userId = req.user._id;

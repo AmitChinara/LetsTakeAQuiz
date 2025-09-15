@@ -44,7 +44,6 @@ LetsTakeAQuiz/
 │ │ ├── ScoreBoard.js
 │ │ └── LifelineButtons.js
 │ └── pages/ # Main pages
-│ ├── Home.js
 │ ├── Dashboard.js
 │ └── GamePlay.js
 ├── analytics/ # Java Spring Boot microservice
