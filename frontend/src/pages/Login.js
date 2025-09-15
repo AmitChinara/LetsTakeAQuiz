@@ -8,6 +8,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
@@ -17,11 +18,11 @@ const Login = () => {
         try {
             const res = await authAPI.login(username, password);
 
-            // If backend returns token in JSON
+            // Save token if returned
             if (res.user.token) {
                 localStorage.setItem(VALUE.TOKEN_KEY, res.user.token);
             }
-            // Redirect to dashboard
+
             navigate(PATH.FRONTEND.DASHBOARD);
         } catch (err) {
             setError(err.message || "Login failed");
@@ -39,13 +40,21 @@ const Login = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                 />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                <div className="password-wrapper">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <span
+                        className="toggle-eye"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? "🙈" : "👁️"}
+                    </span>
+                </div>
                 <button type="submit">Login</button>
             </form>
             {error && <p className="error">{error}</p>}

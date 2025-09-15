@@ -1,4 +1,17 @@
 /* Reset some default browser styles */
+
+/* Chrome / Safari / Edge */
+input[type="password"]::-webkit-outer-spin-button,
+input[type="password"]::-webkit-inner-spin-button {
+    display: none;
+}
+
+/* Internet Explorer / Edge */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
 * {
     margin: 0;
     padding: 0;
